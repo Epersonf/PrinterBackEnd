@@ -16,23 +16,22 @@ export class UsersService {
 
   create(createUserDto: CreateUserDto): any {
     const user = new this.userModel(createUserDto);
-    console.log(user);
     user.password = bcrypt.hashSync(user.password, saltRounds);
     return user.save();
   }
 
   async login(email: string, password: string): Promise<any> {
     const user = await this.userModel.findOne({ email }).exec();
-    if (bcrypt.compare(user.password, password)) {
+    if (await bcrypt.compare(password, user.password)) {
       const token = jwt.sign({
         "id": user.id,
         "password": user.password
       }, process.env.SECRET || "SECRET_DEFAULT", {
         expiresIn: 604800
       });
-      return token;
+      return { token };
     }
-    return "invalid_login";
+    return { msg: "invalid_login" };
   }
 
   findAll(): any {
