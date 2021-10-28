@@ -1,26 +1,53 @@
 import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { User, UserDocument } from "./entities/user.entity";
+
+import * as bcrypt from "bcrypt";
+const saltRounds = 10;
+
+import * as jwt from "jsonwebtoken";
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto): string {
-    return "This action adds a new user";
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+
+  create(createUserDto: CreateUserDto): any {
+    const user = new this.userModel(createUserDto);
+    console.log(user);
+    user.password = bcrypt.hashSync(user.password, saltRounds);
+    return user.save();
   }
 
-  findAll(): string {
-    return "This action returns all users";
+  async login(email: string, password: string): Promise<any> {
+    const user = await this.userModel.findOne({ email }).exec();
+    if (bcrypt.compare(user.password, password)) {
+      const token = jwt.sign({
+        "id": user.id,
+        "password": user.password
+      }, process.env.SECRET || "SECRET_DEFAULT", {
+        expiresIn: 604800
+      });
+      return token;
+    }
+    return "invalid_login";
   }
 
-  findOne(id: number): string {
-    return `This action returns a #${id} user`;
+  findAll(): any {
+    return this.userModel.find();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): string {
-    return `This action updates a #${id} user`;
+  findOne(id: number): any {
+    return this.userModel.findById(id);
   }
 
-  remove(id: number): string {
-    return `This action removes a #${id} user`;
+  update(id: number, updateUserDto: UpdateUserDto): any {
+    return this.userModel.findByIdAndUpdate({ _id: id }, { $set: updateUserDto }, { new: true });
+  }
+
+  remove(id: number): any {
+    return this.userModel.remove(id);
   }
 }
