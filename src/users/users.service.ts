@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -22,6 +22,8 @@ export class UsersService {
 
   async login(email: string, password: string): Promise<any> {
     const user = await this.userModel.findOne({ email }).exec();
+    if (user == null) throw new HttpException("user_not_found", HttpStatus.NOT_FOUND);
+
     if (await bcrypt.compare(password, user.password)) {
       const token = jwt.sign({
         "id": user.id,
@@ -31,7 +33,8 @@ export class UsersService {
       });
       return { token };
     }
-    return { msg: "invalid_login" };
+    
+    throw new HttpException("invalid_login", HttpStatus.UNAUTHORIZED);
   }
 
   findAll(): any {
@@ -47,6 +50,6 @@ export class UsersService {
   }
 
   remove(id: string): any {
-    return this.userModel.remove(id);
+    return this.userModel.deleteOne({ id });
   }
 }
