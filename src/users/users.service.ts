@@ -38,15 +38,15 @@ export class UsersService {
     return this.userModel.find();
   }
 
-  findOne(id: number): any {
+  findOne(id: string): any {
     return this.userModel.findById(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): any {
+  update(id: string, updateUserDto: UpdateUserDto): any {
     return this.userModel.findByIdAndUpdate({ _id: id }, { $set: updateUserDto }, { new: true });
   }
 
-  remove(id: number): any {
+  remove(id: string): any {
     return this.userModel.remove(id);
   }
 }
