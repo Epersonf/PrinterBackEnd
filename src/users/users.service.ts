@@ -17,7 +17,9 @@ export class UsersService {
   create(createUserDto: CreateUserDto): any {
     const user = new this.userModel(createUserDto);
     user.password = bcrypt.hashSync(user.password, saltRounds);
-    return user.save();
+    user.save();
+    user.password = "undefined";
+    return user;
   }
 
   async login(email: string, password: string): Promise<any> {
@@ -27,13 +29,13 @@ export class UsersService {
     if (await bcrypt.compare(password, user.password)) {
       const token = jwt.sign({
         "id": user.id,
-        "password": user.password
+        "role": user.role
       }, process.env.SECRET || "SECRET_DEFAULT", {
         expiresIn: 604800
       });
       return { token };
     }
-    
+
     throw new HttpException("invalid_login", HttpStatus.UNAUTHORIZED);
   }
 
