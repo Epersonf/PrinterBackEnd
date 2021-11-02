@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, NestMiddleware } from "@nestjs/c
 import { Request, Response, NextFunction } from "express";
 
 import * as jwt from "jsonwebtoken";
-import UserRole from "./entities/role.type";
+import UserRole from "../users/entities/role.type";
 
 @Injectable()
 export class AdminMiddleware implements NestMiddleware {
