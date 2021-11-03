@@ -11,16 +11,19 @@ const saltRounds = 10;
 import * as jwt from "jsonwebtoken";
 
 @Injectable()
-export class UsersService implements OnModuleInit {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
-
-  onModuleInit() {
-    if (this.userModel.findOne({ email: process.env.FIRM_EMAIL }))
-      return;
-    const user = new this.userModel(new CreateUserDto(
-      "Admin", process.env.FIRM_EMAIL, "111.111.111-11", "+00 (00) 0000-0000", "admin2021"
-    ));
-    user.save();
+export class UsersService {
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
+    this.userModel.findOne({ email: process.env.FIRM_EMAIL }).exec().then(e => {
+      if (e == undefined) {
+        const user = new this.userModel(new CreateUserDto(
+          "Admin", process.env.FIRM_EMAIL, "111.111.111-11", "+00 (00) 0000-0000", "admin2021"
+        ));
+        user.save();
+        console.log("Super User created");
+      } else {
+        console.log("Super User already exists.");
+      }
+    });
   }
 
   create(createUserDto: CreateUserDto): any {
