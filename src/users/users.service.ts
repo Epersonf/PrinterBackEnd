@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, OnModuleInit } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -11,8 +11,17 @@ const saltRounds = 10;
 import * as jwt from "jsonwebtoken";
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+
+  onModuleInit() {
+    if (this.userModel.findOne({ email: process.env.FIRM_EMAIL }))
+      return;
+    const user = new this.userModel(new CreateUserDto(
+      "Admin", process.env.FIRM_EMAIL, "111.111.111-11", "+00 (00) 0000-0000", "admin2021"
+    ));
+    user.save();
+  }
 
   create(createUserDto: CreateUserDto): any {
     const user = new this.userModel(createUserDto);
