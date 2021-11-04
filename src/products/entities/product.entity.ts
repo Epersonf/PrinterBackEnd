@@ -8,6 +8,10 @@ export type ProductDocument = Product & Document;
 export class Product {
   @Prop({ required: true })
   name: string;
+  @Prop({ default: "" })
+  description: string;
+  @Prop({ default: [] })
+  imagesURL: string[];
   @Prop({ required: true })
   available: boolean;
   @Prop({ required: true })
