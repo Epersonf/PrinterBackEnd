@@ -12,7 +12,7 @@ export class Order {
   user: User;
 
   @Prop({ required: true, ref: Product.name})
-  product: Product;
+  product: Product[];
 
   @Prop({ required: true })
   finalPrice: number;
