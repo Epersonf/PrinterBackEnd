@@ -25,7 +25,7 @@ export default class EmailSender {
     console.log("Email sender configured.");
   }
 
-  static sendEmail(title: string, message: string, destinationEmails: string[]): boolean {
+  static sendEmail(title: string, message: string, ...destinationEmails: string[]): boolean {
     if (EmailSender.singleton == null) return;
     EmailSender.singleton.mailer.sendMail({
       from: EmailSender.singleton.email,
