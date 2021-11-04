@@ -23,6 +23,7 @@ export class Product {
 
   public calculatePrice(selection: number[]): number {
     let currentPrice = this.basePrice;
+    if (this.options == undefined) return currentPrice;
     this.options.forEach((e, i) => currentPrice = e.calculatePrice(currentPrice, selection[i]));
     return currentPrice;
   }
