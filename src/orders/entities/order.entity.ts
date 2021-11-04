@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 import { Product } from "src/products/entities/product.entity";
 import { User } from "src/users/entities/user.entity";
+import OrderStep from "./orderSteps";
 
 export type OrderDocument = Order & Document;
 
@@ -15,6 +16,9 @@ export class Order {
 
   @Prop({ required: true })
   finalPrice: number;
+
+  @Prop({ default: OrderStep.PENDING })
+  status: OrderStep;
 
   @Prop({ default: new Date() })
   purchaseDate: Date;
