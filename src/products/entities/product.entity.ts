@@ -14,6 +14,8 @@ export class Product {
   basePrice: number;
   @Prop({})
   options: OptionList[];
+  @Prop({ default: 0 })
+  boughtCounter: number;
 
   public calculatePrice(selection: number[]): number {
     let currentPrice = this.basePrice;
