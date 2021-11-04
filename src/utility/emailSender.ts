@@ -1,4 +1,5 @@
-import nodemailer, { Transporter } from "nodemailer";
+import * as nodemailer from "nodemailer";
+import { Transporter } from "nodemailer";
 
 export default class EmailSender {
   static singleton: EmailSender = null;
@@ -20,7 +21,7 @@ export default class EmailSender {
         pass: this.password, // generated ethereal password
       },
     });
-    
+
     console.log("Email sender configured.");
   }
 
