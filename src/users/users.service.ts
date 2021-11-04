@@ -27,10 +27,14 @@ export class UsersService {
     });
   }
 
-  create(createUserDto: CreateUserDto): any {
+  async create(createUserDto: CreateUserDto): Promise<any> {
     const user = new this.userModel(createUserDto);
     user.password = bcrypt.hashSync(user.password, saltRounds);
-    user.save();
+    try {
+      await user.save();
+    } catch {
+      throw new HttpException("bad_format", HttpStatus.BAD_REQUEST);
+    }
     user.password = "undefined";
     return user;
   }
