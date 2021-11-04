@@ -18,10 +18,11 @@ export class UsersService {
         const user = new this.userModel(new CreateUserDto(
           "Admin", process.env.FIRM_EMAIL, "111.111.111-11", "+00 (00) 0000-0000", "admin2021"
         ));
-        user.save();
-        console.log("Super User created");
-      } else {
-        console.log("Super User already exists.");
+        user.save((err) => {
+          if (!err) {
+            console.log("Super User created");
+          } 
+        });
       }
     });
   }
