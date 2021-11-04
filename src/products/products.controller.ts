@@ -7,7 +7,7 @@ import { UpdateProductDto } from "./dto/update-product.dto";
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Post()
+  @Post("create/")
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
@@ -18,11 +18,11 @@ export class ProductsController {
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
+  findOne(@Param("create/:id") id: string) {
     return this.productsService.findOne(+id);
   }
 
-  @Patch("patch:id")
+  @Patch("patch/:id")
   update(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(+id, updateProductDto);
   }

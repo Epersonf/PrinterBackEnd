@@ -15,6 +15,6 @@ export class ProductsModule {
   configure(consumer: MiddlewareConsumer): any {
     consumer
       .apply(AdminMiddleware)
-      .forRoutes("/products/patch", "/products/delete");
+      .forRoutes("/products/create", "/products/patch", "/products/delete");
   }
 }
