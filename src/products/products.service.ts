@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { UserDocument } from "src/users/entities/user.entity";
@@ -10,8 +10,14 @@ import { Product } from "./entities/product.entity";
 export class ProductsService {
   constructor(@InjectModel(Product.name) private productModel: Model<UserDocument>) {}
 
-  create(createProductDto: CreateProductDto) {
-    return new this.productModel(createProductDto);
+  async create(createProductDto: CreateProductDto) {
+    const productModel = new this.productModel(createProductDto);
+    try {
+      await productModel.save();
+    } catch {
+      throw new HttpException("bad_format", HttpStatus.BAD_REQUEST);
+    }
+    return productModel;
   }
 
   findAll() {
