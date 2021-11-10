@@ -33,9 +33,9 @@ export class UsersService {
     try {
       await user.save();
     } catch {
-      throw new HttpException("bad_format", HttpStatus.BAD_REQUEST);
+      throw new HttpException("already_exists", HttpStatus.CONFLICT);
     }
-    user.password = "undefined";
+    user.password = undefined;
     return user;
   }
 
@@ -50,7 +50,8 @@ export class UsersService {
       }, process.env.SECRET || "SECRET_DEFAULT", {
         expiresIn: 604800
       });
-      return { token };
+      user.password = undefined;
+      return { user, token };
     }
 
     throw new HttpException("invalid_login", HttpStatus.UNAUTHORIZED);
