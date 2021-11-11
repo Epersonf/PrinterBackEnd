@@ -18,17 +18,17 @@ export class ProductsController {
   }
 
   @Get(":id")
-  findOne(@Param("create/:id") id: string) {
-    return this.productsService.findOne(+id);
+  findOne(@Param("id") id: string) {
+    return this.productsService.findOne(id);
   }
 
   @Patch("patch/:id")
   update(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+    return this.productsService.update(id, updateProductDto);
   }
 
   @Delete("delete/:id")
   remove(@Param("id") id: string) {
-    return this.productsService.remove(+id);
+    return this.productsService.remove(id);
   }
 }

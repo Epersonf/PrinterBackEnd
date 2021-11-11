@@ -26,15 +26,15 @@ export class ProductsService {
     return result;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.productModel.findById(id);
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
+  update(id: string, updateProductDto: UpdateProductDto) {
     return this.productModel.findByIdAndUpdate({ _id: id }, { $set: updateProductDto }, { new: true });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.productModel.deleteOne({ id });
   }
 }
