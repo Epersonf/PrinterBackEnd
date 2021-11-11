@@ -9,6 +9,7 @@ import * as bcrypt from "bcrypt";
 const saltRounds = 10;
 
 import * as jwt from "jsonwebtoken";
+import UserRole from "./entities/role.type";
 
 @Injectable()
 export class UsersService {
@@ -16,7 +17,7 @@ export class UsersService {
     this.userModel.findOne({ email: process.env.FIRM_EMAIL }).exec().then(e => {
       if (e == undefined) {
         const user = new this.userModel(new CreateUserDto(
-          "Admin", process.env.FIRM_EMAIL, "111.111.111-11", "+00 (00) 0000-0000", "admin2021"
+          "Admin", process.env.FIRM_EMAIL, "111.111.111-11", "+00 (00) 0000-0000", "admin2021", UserRole.ADMIN
         ));
         user.save((err) => {
           if (!err) {
