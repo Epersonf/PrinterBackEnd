@@ -37,4 +37,9 @@ export class ProductsService {
   remove(id: string) {
     return this.productModel.deleteOne({ id });
   }
+
+  async calculatePrice(id: string, options: number[]) {
+    const product = await this.productModel.findById(id);
+    return { price: Product.calculatePrice(product, options) };
+  }
 }

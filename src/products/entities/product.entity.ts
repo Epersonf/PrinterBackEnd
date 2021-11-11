@@ -21,10 +21,12 @@ export class Product {
   @Prop({ default: 0 })
   boughtCounter: number;
 
-  public calculatePrice(selection: number[]): number {
-    let currentPrice = this.basePrice;
-    if (this.options == undefined) return currentPrice;
-    this.options.forEach((e, i) => currentPrice = e.calculatePrice(currentPrice, selection[i]));
+  public static calculatePrice(product: Product, selection: number[]): number {
+    let currentPrice = product.basePrice;
+    if (product.options == undefined) return currentPrice;
+    product.options.forEach((e, i) => {
+      currentPrice = OptionList.calculatePrice(e, currentPrice, selection[i]);
+    });
     return currentPrice;
   }
 }

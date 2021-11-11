@@ -1,6 +1,6 @@
 import Operation from "./operation";
 
-class Option {
+interface Option {
   name: string;
   operation: Operation;
   value: number;

@@ -31,4 +31,9 @@ export class ProductsController {
   remove(@Param("id") id: string) {
     return this.productsService.remove(id);
   }
+
+  @Post("calculate_price/:id")
+  calculatePrice(@Param("id") id: string, @Body("options") options) {
+    return this.productsService.calculatePrice(id, options);
+  }
 }

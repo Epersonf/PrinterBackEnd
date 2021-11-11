@@ -5,9 +5,10 @@ class OptionList {
   name: string;
   options: Option[];
 
-  public calculatePrice(currentPrice: number, index: number): number {
+  public static calculatePrice(optionList: OptionList, currentPrice: number, index: number): number {
     let editedPrice = currentPrice;
-    const selectedOption = this.options[index];
+    const selectedOption = optionList.options[index];
+    if (selectedOption == undefined) return currentPrice;
     switch (selectedOption.operation) {
     case Operation.ADD:
       editedPrice += selectedOption.value;
