@@ -60,14 +60,12 @@ export class UsersService {
   }
 
   async findAll(query: any): Promise<User[]> {
-    const result = await showModelPagination<UserDocument>(query, this.userModel, "cpf emailConfirmed name phoneNumber role");
+    const result = await showModelPagination<UserDocument>(query, this.userModel, "-password");
     return result;
   }
 
   async findOne(id: string): Promise<User> {
-    const foundUser = await this.userModel.findById(id);
-    foundUser.password = "undefined";
-    return foundUser;
+    return this.userModel.findById(id).select("-password");
   }
 
   update(id: string, updateUserDto: UpdateUserDto): any {
