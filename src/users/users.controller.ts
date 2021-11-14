@@ -18,12 +18,12 @@ export class UsersController {
     return this.usersService.login(loginUserDto.email, loginUserDto.password);
   }
 
-  @Get()
+  @Get("find/")
   findAll(): any {
     return this.usersService.findAll();
   }
 
-  @Get(":id")
+  @Get("find/:id")
   findOne(@Param("id") id: string): any {
     return this.usersService.findOne(id);
   }
