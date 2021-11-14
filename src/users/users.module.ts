@@ -15,6 +15,6 @@ export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
     consumer
       .apply(AdminMiddleware)
-      .forRoutes("/users/patch", "/users/delete", "/user/find");
+      .forRoutes("/users/patch", "/users/delete", "/users/find");
   }
 }

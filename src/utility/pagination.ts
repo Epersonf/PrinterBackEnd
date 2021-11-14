@@ -15,7 +15,7 @@ export  async function showModelPagination<T>(query: any, model: Model<T>, ...se
 
     if (id) return await model.findById(id);
 
-    if (limit == undefined || page == undefined) return null;
+    if (limit == undefined || page == undefined) return { pagesAmount: 0, list: [] };
 
     const pagination: any = await pageValues(page, limit);
 

@@ -10,6 +10,7 @@ const saltRounds = 10;
 
 import * as jwt from "jsonwebtoken";
 import UserRole from "./entities/role.type";
+import { showModelPagination } from "src/utility/pagination";
 
 @Injectable()
 export class UsersService {
@@ -58,12 +59,15 @@ export class UsersService {
     throw new HttpException("invalid_login", HttpStatus.UNAUTHORIZED);
   }
 
-  findAll(): any {
-    return this.userModel.find();
+  async findAll(query: any): Promise<User[]> {
+    const result = await showModelPagination<UserDocument>(query, this.userModel, "cpf emailConfirmed name phoneNumber role");
+    return result;
   }
 
-  findOne(id: string): any {
-    return this.userModel.findById(id);
+  async findOne(id: string): Promise<User> {
+    const foundUser = await this.userModel.findById(id);
+    foundUser.password = "undefined";
+    return foundUser;
   }
 
   update(id: string, updateUserDto: UpdateUserDto): any {
