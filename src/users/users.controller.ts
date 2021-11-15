@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Headers } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { LoginUserDto } from "./dto/login-user.dto";
+import EditProfileDto from "./dto/edit-profile.dto";
 
 @Controller("users")
 export class UsersController {
@@ -31,6 +32,11 @@ export class UsersController {
   @Patch("patch/:id")
   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto): any {
     return this.usersService.update(id, updateUserDto);
+  }
+
+  @Patch("edit_profile/:id")
+  editProfile(@Headers("id") idComp: string, @Param("id") id: string, @Body() editProfileDto: EditProfileDto) {
+    return this.usersService.editProfile(idComp, id, editProfileDto);
   }
 
   @Delete("delete/:id")

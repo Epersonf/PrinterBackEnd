@@ -11,6 +11,7 @@ const saltRounds = 10;
 import * as jwt from "jsonwebtoken";
 import UserRole from "./entities/role.type";
 import { showModelPagination } from "src/utility/pagination";
+import EditProfileDto from "./dto/edit-profile.dto";
 
 @Injectable()
 export class UsersService {
@@ -70,6 +71,11 @@ export class UsersService {
 
   update(id: string, updateUserDto: UpdateUserDto): any {
     return this.userModel.findByIdAndUpdate({ _id: id }, { $set: updateUserDto }, { new: true });
+  }
+
+  editProfile(idComp: string, id: string, editProfileDto: EditProfileDto): any {
+    if (idComp != id) throw new HttpException("must_be_account_owner", HttpStatus.UNAUTHORIZED);
+    return this.userModel.findByIdAndUpdate({ _id: id }, { $set: editProfileDto }, { new: true });
   }
 
   remove(id: string): any {

@@ -4,6 +4,7 @@ import { UsersController } from "./users.controller";
 import { MongooseModule } from "@nestjs/mongoose";
 import { User, UserSchema } from "./entities/user.entity";
 import { AdminMiddleware } from "../middlewares/admin.middleware";
+import { LoggedMiddleware } from "src/middlewares/logged.middleware";
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
@@ -16,5 +17,7 @@ export class UsersModule implements NestModule {
     consumer
       .apply(AdminMiddleware)
       .forRoutes("/users/patch", "/users/delete", "/users/find");
+    
+    consumer.apply(LoggedMiddleware).forRoutes("/users/edit_profile");
   }
 }

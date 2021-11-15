@@ -12,6 +12,9 @@ export class LoggedMiddleware implements NestMiddleware {
     const info: any = await jwt.verify(token, process.env.SECRET || "SECRET_DEFAULT");
     if (info == null) throw new HttpException("invalid_token", HttpStatus.UNAUTHORIZED);
 
+    req.headers["id"] = info.id;
+    req.headers["role"] = info.role;
+
     next();
   }
 }

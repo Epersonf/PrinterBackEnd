@@ -15,6 +15,9 @@ export class AdminMiddleware implements NestMiddleware {
 
     if (info.role == UserRole.USER) throw new HttpException("no_permission", HttpStatus.UNAUTHORIZED);
 
+    req.headers["id"] = info.id;
+    req.headers["role"] = info.role;
+
     next();
   }
 }
