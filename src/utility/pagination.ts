@@ -7,7 +7,7 @@ function pageValues(page: number, limit: number) : { skip: number, limit: number
 
 export async function showModelPagination<T>(query: any, model: Model<T>, ...select : string[]) : Promise<any> {
   try {
-    const {id, page, limit, sort, ...otherParams} = query;
+    const {id, page, limit, sort, name, ...otherParams} = query;
 
     if (id) return await model.findById(id);
 
@@ -15,8 +15,11 @@ export async function showModelPagination<T>(query: any, model: Model<T>, ...sel
 
     const pagination: { skip: number, limit: number} = await pageValues(page, limit);
     
+    const findParams = {...otherParams};
+    if (name != undefined && name != "") findParams.name = { $regex: ".*" + name + ".*" };
+
     const models = await model
-      .find(otherParams)
+      .find(findParams)
       .sort(sort)
       .select(select.join(" "))
       .skip(pagination.skip)
