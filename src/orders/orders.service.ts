@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { UserDocument } from "src/users/entities/user.entity";
+import { showModelPagination } from "src/utility/pagination";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
 import { Order } from "./entities/order.entity";
@@ -20,8 +21,8 @@ export class OrdersService {
     return new this.orderModel(createOrderDto);
   }
 
-  findAll() {
-    return this.orderModel.find();
+  async findAll(query: any) {
+    return showModelPagination<UserDocument>(query, this.orderModel);
   }
 
   findOne(id: number) {
